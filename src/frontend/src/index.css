@@ -1,0 +1,251 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+   Arabic-first typography.
+   The bundled Latin font (Plus Jakarta Sans) covers Latin glyphs and numerals.
+   Arabic glyphs resolve through the system Arabic stack below, which is
+   present on virtually every Arabic-capable device (iOS, Android, Windows,
+   macOS). Cairo / Tajawal / IBM Plex Sans Arabic are listed first so devices
+   that ship them get the preferred face.
+--------------------------------------------------------------------------- */
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 200 800;
+}
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  font-display: swap;
+  font-weight: 300 900;
+}
+
+@layer base {
+  :root {
+    --font-display: "Cairo", "Tajawal", "IBM Plex Sans Arabic",
+      "Plus Jakarta Sans", "Segoe UI", Tahoma, system-ui, sans-serif;
+    --font-body: "Cairo", "Tajawal", "IBM Plex Sans Arabic", "Figtree",
+      "Segoe UI", Tahoma, system-ui, sans-serif;
+    --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+
+    --radius: 0.9rem;
+
+    /* "المِرقَم الأكاديمي" — deep teal-blue ink on warm paper */
+    --background: 0.985 0.006 230;
+    --foreground: 0.22 0.03 245;
+
+    --card: 1 0.003 230;
+    --card-foreground: 0.22 0.03 245;
+
+    --popover: 1 0.004 230;
+    --popover-foreground: 0.22 0.03 245;
+
+    --primary: 0.44 0.11 235;
+    --primary-foreground: 0.985 0.006 235;
+
+    --secondary: 0.945 0.014 232;
+    --secondary-foreground: 0.3 0.035 240;
+
+    --muted: 0.955 0.01 232;
+    --muted-foreground: 0.52 0.025 240;
+
+    --accent: 0.72 0.145 68;
+    --accent-foreground: 0.24 0.05 60;
+
+    --destructive: 0.55 0.21 27;
+    --destructive-foreground: 0.985 0.006 27;
+
+    --success: 0.58 0.13 158;
+    --success-foreground: 0.985 0.006 158;
+
+    --warning: 0.78 0.15 78;
+    --warning-foreground: 0.26 0.05 70;
+
+    --border: 0.9 0.012 232;
+    --input: 0.9 0.012 232;
+    --ring: 0.44 0.11 235;
+
+    /* Status badges — جديد / قيد التنفيذ / مكتمل / ملغي */
+    --status-new: 0.55 0.13 250;
+    --status-new-bg: 0.95 0.035 250;
+    --status-new-fg: 0.36 0.11 250;
+
+    --status-progress: 0.7 0.15 70;
+    --status-progress-bg: 0.955 0.045 80;
+    --status-progress-fg: 0.42 0.1 65;
+
+    --status-done: 0.58 0.13 158;
+    --status-done-bg: 0.95 0.04 158;
+    --status-done-fg: 0.36 0.1 158;
+
+    --status-cancelled: 0.55 0.2 27;
+    --status-cancelled-bg: 0.955 0.03 27;
+    --status-cancelled-fg: 0.42 0.15 27;
+
+    --chart-1: 0.44 0.11 235;
+    --chart-2: 0.72 0.145 68;
+    --chart-3: 0.58 0.13 158;
+    --chart-4: 0.62 0.12 300;
+    --chart-5: 0.55 0.2 27;
+
+    --sidebar: 0.975 0.008 232;
+    --sidebar-foreground: 0.22 0.03 245;
+    --sidebar-primary: 0.44 0.11 235;
+    --sidebar-primary-foreground: 0.985 0.006 235;
+    --sidebar-accent: 0.945 0.014 232;
+    --sidebar-accent-foreground: 0.3 0.035 240;
+    --sidebar-border: 0.9 0.012 232;
+    --sidebar-ring: 0.44 0.11 235;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.44 0.11 235),
+      oklch(0.5 0.1 215)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.985 0.006 230),
+      oklch(0.955 0.012 232)
+    );
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 0.17 0.02 245;
+    --foreground: 0.94 0.012 235;
+
+    --card: 0.215 0.024 245;
+    --card-foreground: 0.94 0.012 235;
+
+    --popover: 0.235 0.026 245;
+    --popover-foreground: 0.94 0.012 235;
+
+    --primary: 0.7 0.12 220;
+    --primary-foreground: 0.16 0.025 240;
+
+    --secondary: 0.26 0.028 243;
+    --secondary-foreground: 0.88 0.012 235;
+
+    --muted: 0.26 0.028 243;
+    --muted-foreground: 0.66 0.02 238;
+
+    --accent: 0.78 0.14 72;
+    --accent-foreground: 0.17 0.03 65;
+
+    --destructive: 0.66 0.19 27;
+    --destructive-foreground: 0.16 0.02 27;
+
+    --success: 0.7 0.14 158;
+    --success-foreground: 0.16 0.02 158;
+
+    --warning: 0.8 0.14 80;
+    --warning-foreground: 0.18 0.03 70;
+
+    --border: 0.3 0.026 243;
+    --input: 0.3 0.026 243;
+    --ring: 0.7 0.12 220;
+
+    --status-new: 0.72 0.12 250;
+    --status-new-bg: 0.28 0.05 250;
+    --status-new-fg: 0.85 0.08 250;
+
+    --status-progress: 0.82 0.14 78;
+    --status-progress-bg: 0.3 0.05 75;
+    --status-progress-fg: 0.9 0.09 80;
+
+    --status-done: 0.72 0.14 158;
+    --status-done-bg: 0.28 0.045 158;
+    --status-done-fg: 0.86 0.09 158;
+
+    --status-cancelled: 0.68 0.18 27;
+    --status-cancelled-bg: 0.3 0.05 27;
+    --status-cancelled-fg: 0.88 0.08 27;
+
+    --chart-1: 0.7 0.12 220;
+    --chart-2: 0.78 0.14 72;
+    --chart-3: 0.7 0.14 158;
+    --chart-4: 0.68 0.13 300;
+    --chart-5: 0.68 0.18 27;
+
+    --sidebar: 0.2 0.022 245;
+    --sidebar-foreground: 0.94 0.012 235;
+    --sidebar-primary: 0.7 0.12 220;
+    --sidebar-primary-foreground: 0.16 0.025 240;
+    --sidebar-accent: 0.26 0.028 243;
+    --sidebar-accent-foreground: 0.88 0.012 235;
+    --sidebar-border: 0.3 0.026 243;
+    --sidebar-ring: 0.7 0.12 220;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.55 0.12 225),
+      oklch(0.6 0.11 205)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.17 0.02 245),
+      oklch(0.2 0.024 245)
+    );
+  }
+
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .bg-gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+
+  .bg-gradient-subtle {
+    background-image: var(--gradient-subtle);
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Status badge helpers — consume the status tokens above */
+  .badge-new {
+    background-color: oklch(var(--status-new-bg));
+    color: oklch(var(--status-new-fg));
+  }
+  .badge-progress {
+    background-color: oklch(var(--status-progress-bg));
+    color: oklch(var(--status-progress-fg));
+  }
+  .badge-done {
+    background-color: oklch(var(--status-done-bg));
+    color: oklch(var(--status-done-fg));
+  }
+  .badge-cancelled {
+    background-color: oklch(var(--status-cancelled-bg));
+    color: oklch(var(--status-cancelled-fg));
+  }
+}

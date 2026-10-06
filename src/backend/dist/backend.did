@@ -1,0 +1,126 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type Timestamp = nat;
+type SubmitRequestInput = 
+ record {
+   deadline: opt text;
+   description: text;
+   email: opt text;
+   fullName: text;
+   phone: text;
+   serviceType: ServiceType;
+   university: opt text;
+ };
+type ServiceType = 
+ variant {
+   homework;
+   other;
+   presentation;
+   programming;
+   research;
+   translation;
+ };
+type ServiceRequest = 
+ record {
+   createdAt: Timestamp;
+   deadline: opt text;
+   description: text;
+   email: opt text;
+   fullName: text;
+   id: nat;
+   phone: text;
+   reference: RequestReference;
+   serviceType: ServiceType;
+   status: RequestStatus;
+   university: opt text;
+ };
+type Result__1 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type RequestStatus = 
+ variant {
+   cancelled;
+   completed;
+   inProgress;
+   new;
+ };
+type RequestReference = text;
+type RequestFilter = 
+ record {
+   search: opt text;
+   serviceType: opt ServiceType;
+   status: opt RequestStatus;
+ };
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result__1);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  execute: (qJson: text) -> (Result) query;
+  /// Returns a static Markdown description of the backend's public API.
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// Admin-only: read the configured notification recipient address.
+  getNotificationEmail: () -> (text) query;
+  /// Admin-only: fetch a single request by id.
+  getRequest: (id: nat) -> (opt ServiceRequest) query;
+  isCallerAdmin: () -> (bool) query;
+  /// Admin-only: list requests with optional status / service-type / search filters.
+  listRequests: (filter: RequestFilter) -> (vec ServiceRequest) query;
+  schema: () -> (text) query;
+  /// Admin-only: set the notification recipient address.
+  setNotificationEmail: (email: text) -> ();
+  /// Public endpoint: submit a new academic-service request. No authentication
+  /// required. Returns the created request including its reference number.
+  submitRequest: (input: SubmitRequestInput) -> (ServiceRequest);
+  /// Admin-only: change the status of a request.
+  updateRequestStatus: (id: nat, status: RequestStatus) ->
+   (opt ServiceRequest);
+}
